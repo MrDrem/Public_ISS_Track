@@ -16,12 +16,6 @@ red_pen = display.create_pen(255, 0, 0)
 pink_pen = display.create_pen(251,72,196)
 led = RGBLED(6, 7, 10, invert=True)
 
-# set up the buttons
-button_a = Button(12, invert=True)
-button_b = Button(13, invert=True)
-button_x = Button(14, invert=True)
-button_y = Button(15, invert=True)
-
 def connect():
     #Connect to WLAN
     led.set_rgb(255, 0, 0)
@@ -67,7 +61,6 @@ def mapdot(self):
 def main():
     trail = []
     t = 0
-    n = 0
     while True:
         led.set_rgb(0, 0, 0)
         iss_yx = iss_lat_lon()
@@ -75,8 +68,10 @@ def main():
         mapyx = mapdot(iss_yx)
         if mapyx[1] > 180:
             mapshift = -120
+            mapmove = 1
         else:
             mapshift = 0
+            mapmove = 0
         display.set_pen(black_pen)
         display.clear()
         #display map
@@ -85,17 +80,19 @@ def main():
         j.decode(mapshift, 0, jpegdec.JPEG_SCALE_FULL)
         display.set_font("bitmap8")
         display.set_pen(pink_pen)
-        #display.line(180+mapshift, 37, 180+mapshift, 40)
-        #display.line(179+mapshift, 39, 181+mapshift, 39)
         display.circle(180+mapshift,39,2)
-        #end of map display
         display.set_pen(white_pen)
         display.text(str("Greenwich Meridian is:"), 0, 190, scale=2)
         display.text(str(str(loc) + "km from the ISS"), 0, 210, scale=2)
         display.set_pen(red_pen)
         display.circle(mapyx[1]+mapshift,mapyx[0],4)
+        if mapmove == 1:
+            for i in trail:
+                display.circle(i[0]+mapshift,i[1], 2)
+        else:
+            for i in trail:
+                display.circle(i[0],i[1], 2)
         display.update()
-        n = n+1
         if len(trail) >= 30:
             trail.pop(0)
         if t == 0:
@@ -103,20 +100,7 @@ def main():
             t = 4
         else:
             t -= 1
-        #update(loc, mapyx, trail)
-        #delay before next iss location, no sooner than 5 seconds
-        #see http://open-notify.org/Open-Notify-API/ISS-Location-Now/
-        print(iss_yx)
-        print("Greenwich Meridian is:\n" + str(loc) + "km from the ISS")
-        print(mapyx)
-        print(trail)
-        print(len(trail))
-#        for i in trail():
-#            print([i])
-        print(t)
-        print(n)
         sleep(30) #wait 30 seconds *minimum time 5 seconds*
 
 if __name__ == "__main__":
     main()  
-
