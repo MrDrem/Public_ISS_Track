@@ -1,3 +1,7 @@
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 Human Readable - https://creativecommons.org/licenses/by-nc-sa/4.0/
 Licence - https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+Haversive calculation from Wayne Dyck - https://gist.github.com/rochacbruno/2883505
+
+Code based on that by https://www.raspberryconnect.com/projects/39-programming/194-raspberry-pi-pico-with-wifi-used-as-an-international-space-station-tracker-iss but changed to micropython and altered to use the Pico W rather than a seperate wifi board.
